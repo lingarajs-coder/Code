@@ -1,0 +1,38 @@
+<div class="container">
+
+
+<div *ngIf='dataLoading' >
+  Loading the products...
+</div>
+
+<ng-container *ngIf='!dataLoading' >
+  <div *ngFor='let product of products' class="p-2">
+   <h4  class="d-inline-block" style="width: 300px" > Product: {{product.name}}</h4>
+    <button (click)='addProduct(product.definitionUrl)' class="btn btn-primary d-inline-block"> Add {{product.name}} </button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf='showForm' >
+    <form [formGroup]='productForm' >
+        <div class="form-group formstyle">
+        <ng-container formArrayName='options' >
+          <div *ngFor='let option of productForm.controls.options.controls; let i=index;'  >
+            <div [formGroupName]='i' >
+              {{ productForm.controls.options.controls[i].value.caption }}  
+              <input [type]="getType(productForm.controls.options.controls[i].value.type) " 
+              [value]="productForm.controls.options.controls[i].value.defaultValue" 
+              formControlName='defaultValue' class="d-block form-control" >
+              <div *ngIf='productForm.controls.options.controls[i].invalid' > 
+                {{productForm.controls.options.controls[i].value.validationMessage}} 
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <button (click)='processForm()' class="btn btn-primary d-inline-block" >Submit</button>
+        </div>
+      </form>
+</ng-container>
+
+
+
+</div>
